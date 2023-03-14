@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="conteiner">
+        <div class="flex">
+            <input class="num" type="text" placeholder="Введите число от 1 до 10">
+            <button class="btn-send">Отправить</button>
+        </div>
+    </div>
+    <p class="j-text"></p>
+    <div class="j-img"></div>
+<!-- ///////////////////////////////////////////// -->
+    <style>
+.conteiner {
+    background-color:  rgb(208, 243, 231);  
+    margin: 200px 150px;
+    min-height: 400px;
+    border: 40px double #addadb;
+}
+.flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+}
+.num {
+    text-align: center;
+    padding: 10px 120px;
+    margin: 120px auto;
+    background-color: #addadb;
+    border: 1px solid;
+}
+.btn-send {
+    padding: 12px 80px;
+    margin: auto;
+}
+
+button {
+    border-radius: 30px;
+    border-width: 1px;
+    background-color: #FFCCCC;
+}
+
+.j-img {
+    width: 600px;
+    height: auto;
+}
+
+.img-in {
+    width: 300px;
+    height: 200px;
+    margin: 50px;
+}
+    </style>
+<!-- ///////////////////////////////////////////// -->
+    <script>
+function edition(url, callback, value) {
+    const varies = new XMLHttpRequest();
+    varies.open ('GET', url, true);
+
+    varies.onload = function(){
+        if (value >= 1 && value <= 10) {
+            let resulD = JSON.parse(varies.response);
+            if (callback) {
+                callback(resulD);
+              }
+        }else {
+            unResult.innerHTML = "Число вне диапазона";
+        }
+    };
+    varies.send();
+};
+
+const unResult = document.querySelector('.j-text');
+const wowResult = document.querySelector('.j-img');
+
+//КНОПКА
+const btnSend = document.querySelector('.btn-send');
+
+function displayResult(result){
+    let cards = '';
+    result.forEach(item => {
+        const blockImg =`
+        <div class="pins">
+          <img
+            class = "img-in"
+            src="${item.download_url}"
+            height: 200px;
+            width: 200px;
+          />
+        </div>`;
+        cards = cards + blockImg;
+    });
+    wowResult.innerHTML = cards;
+}
+
+btnSend.addEventListener('click', () => {
+    let value = +document.querySelector('.num').value;
+    edition(`https://picsum.photos/v2/list?limit=${value}`,
+    displayResult, value);
+});
+    </script>
+</body>
+</html>
